@@ -1,0 +1,53 @@
+:root {
+  --fondo-color: rgb(31, 4, 31);
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  font-size: 1.6rem;
+  line-height: 1.45;
+  background-image: linear-gradient(to bottom, black, var(--fondo-color));
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 2dvw + 2rem, 3.4rem);
+}
+h2 {
+  font-size: clamp(2.0rem, 1.5dvw + 1rem, 2.4rem);
+}
+
+p {
+  font-size: clamp(1.4rem, 1dvw + 1rem, 1.6rem);
+}
+
+app-mi-app {
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+}
+
+.contenedor-g {
+  width: clamp(320px, 90vw, 1500px);
+  margin-inline: auto;
+  padding: 0.5rem;
+}
+
+main {
+  flex: 1;
+  width: clamp(320px, 90vw, 1500px);
+  margin-inline: auto;
+  padding: 2rem;
+}

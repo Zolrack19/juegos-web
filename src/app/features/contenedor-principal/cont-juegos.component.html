@@ -1,0 +1,11 @@
+<section class="juegos">
+  <div class="contenedor-juegos">
+    @for (i of juegos; track $index) {
+      <div class="card-juego" routerLink="/{{i.url}}" tabindex="0" draggable="false">
+        <h3>{{i.titulo}}</h3>
+        <img src="{{i.imagen}}" alt="logo-{{i.titulo}}">
+        <p class="card-descripcion">{{i.descrp}}</p>
+      </div>
+    }
+  </div>
+</section>

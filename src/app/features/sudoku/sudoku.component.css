@@ -1,0 +1,158 @@
+section.sudoku-juego {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sudoku-contenedor {
+  /* width: max(35%, 30vh); */
+  width: 400px;
+  /* border: 1px solid black; */
+  position: relative;
+}
+
+.cabecera-tablero {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: rgba(128, 128, 128, 0.253);
+  padding: 8px;
+}
+
+.botones-cabecera-tablero {
+  margin-left: auto;
+  display: flex;
+  justify-content: space-between;
+  width: 30%;
+}
+
+.botones-cabecera-tablero > button {
+  width: 30%;
+  aspect-ratio: 1;
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 0px;
+}
+
+.botones-cabecera-tablero > button:nth-child(1) {
+  background-image: url('/assets/iconos/play-pause-svgrepo-com.svg');
+}
+
+.botones-cabecera-tablero > button:nth-child(2) {
+  background-image: url('/assets/iconos/reset-svgrepo-com.svg');
+}
+
+.botones-cabecera-tablero > button:nth-child(3) {
+  background-image: url('/assets/iconos/help-svgrepo-com.svg');
+}
+
+.botones-cabecera-tablero > button:hover {
+  filter: drop-shadow(1px 1px 5px rgba(220, 20, 60, 0.486));
+  cursor: pointer;
+}
+
+.sudoku-tablero {
+  margin: 2px;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(9, 1fr);
+  caret-color: transparent;
+  filter: drop-shadow(1px 1px 10px rgba(220, 20, 60, 0.486));
+  border: 3px solid rgb(116, 12, 201);
+}
+
+.celda-sudoku {
+  background-color: transparent;
+  width: 100%;
+  border: 1px solid rgba(108, 24, 156, 0.514);
+  aspect-ratio: 1;
+  text-align: center;
+  align-content: center;
+  font-size: clamp(1.2rem, 2vw + 1rem, 2.2rem);
+}
+
+.celda-sudoku:nth-child(9n + 4), .celda-sudoku:nth-child(9n + 7) {
+  border-left: 3px solid rgb(116, 12, 201);
+}
+.celda-sudoku:nth-child(n + 19):nth-child(-n + 27), .celda-sudoku:nth-child(n + 46):nth-child(-n + 54) {
+  border-bottom: 3px solid rgb(116, 12, 201);
+}
+
+.celda-sudoku:focus {
+  filter: drop-shadow(0px 0px 5px rgb(105, 238, 255));
+  border-width: 0px;
+}
+.resaltado_r, .resaltado_c {
+  background-color: rgb(255, 208, 212);
+}
+
+@media (prefers-color-scheme: dark) {
+  .resaltado_r, .resaltado_c {
+    background-color: rgba(19, 94, 129, 0.315);
+  }
+}
+
+#popup-cabecera-sudoku {
+  position: absolute;
+  width: 500px;
+  height: 200px;
+  margin: auto;
+  padding: 2.2rem;
+  border: 1px solid rgba(220, 20, 60, 0.658);
+  filter: drop-shadow(1px 1px 15px rgba(187, 20, 220, 0.658));
+  border-radius: 15px;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#popup-cabecera-sudoku > div {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+#popup-cabecera-sudoku > div > button {
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  border-color: rgba(135, 7, 139, 0.185);
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 139, 0.384);
+}
+
+button.btn-sudoku-nuevo-juego {
+  will-change: filter;
+  margin: 15px 35% 0%;
+  padding: 0.5rem 0.8rem;
+  background-color: transparent;
+  cursor: pointer;
+  border: 0.1px solid rgba(128, 128, 128, 0.575);
+  transition: filter 0.5s ease;
+}
+
+button.btn-sudoku-nuevo-juego:hover {
+  filter: drop-shadow(0px 0px 2px rgb(255, 94, 0));
+  box-shadow: 0px 0px 4px rgba(205, 0, 224, 0.678), 1px -1px 95px rgba(238, 129, 5, 0.781);
+}
+
+button.btn-sudoku-nuevo-juego:focus {
+  outline: 0px;
+  filter: drop-shadow(0px 0px 2px rgb(255, 94, 0));
+  box-shadow: 0px 0px 4px rgba(205, 0, 224, 0.678), 1px -1px 95px rgba(238, 129, 5, 0.781);
+}
+
+button.btn-sudoku-nuevo-juego:active {
+  background-color: rgba(236, 172, 226, 0.459);
+}
+
+
+@media (max-width: 430px) {
+  .sudoku-contenedor {
+    width: 100%;
+  }
+  dialog {
+    width: 91%;
+  }
+}

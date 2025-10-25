@@ -1,0 +1,102 @@
+section.tres-en-raya-juego {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --color-barras: rgb(47, 252, 92);
+}
+
+.tres-contenedor {
+  width: 400px;
+  position: relative;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.tres-celda {
+  filter: drop-shadow(0px 0px 30px gold);
+  padding: 20%;
+  width: 100%;
+  min-height: 100%;
+  aspect-ratio: 1;
+}
+
+.tres-celda:hover {
+  background-color: rgba(128, 128, 128, 0.226);
+}
+
+.tres-celda:active {
+  background-color: rgba(184, 255, 245, 0.753);
+}
+
+.tres-celda:nth-child(3n) {
+  border-left: 3px solid var(--color-barras);
+}
+.tres-celda:nth-child(3n + 1) {
+  border-right: 3px solid var(--color-barras);
+}
+.tres-celda:nth-child(7), .tres-celda:nth-child(8), .tres-celda:nth-child(9) {
+  border-top: 3px solid var(--color-barras);
+}
+.tres-celda:nth-child(1), .tres-celda:nth-child(2), .tres-celda:nth-child(3) {
+  border-bottom: 3px solid var(--color-barras);
+}
+
+.tres-o {
+  aspect-ratio: 1;
+  border-radius: 100%;
+  border: 6px solid;
+  animation: parpadeo 0.5s ease-in-out 1;
+}
+
+@keyframes parpadeo {
+  0% {
+    border-color: white;
+  }
+  25% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: white;
+  }
+  75% {
+    border-color: transparent;
+  }
+  100% {
+    border-color: white;
+  }
+}
+
+.tres-x {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.tres-x .x-1 {
+  position: absolute;
+  border: 5px solid white;
+  z-index: 10;
+  width: 100%;
+  transform-origin: center left;
+  animation: x1 0.5s ease 1 forwards;
+}
+
+.tres-x .x-2 {
+  z-index: 11;
+  width: 100%;
+  position: absolute;
+  border: 5px solid white;
+  transform-origin: center right;
+  animation: x2 0.5s ease 1 forwards;
+}
+
+@keyframes x1 {
+  to {
+    transform: rotate(45deg) translateX(18%);
+  }
+}
+@keyframes x2 {
+  to {
+    transform: rotate(-45deg) translateX(-18%);
+  }
+}

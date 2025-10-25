@@ -1,0 +1,28 @@
+<section class="sudoku-juego">
+  <div class="sudoku-contenedor">
+    <div class="cabecera-tablero">
+      <span>tiempo: {{hora}}:{{minuto}}:{{segundo}}</span>
+      <div class="botones-cabecera-tablero">
+        <button (click)="pausar()" title="Pausar"></button>
+        <button popovertarget="popup" (click)="mostrarPopup('Está seguro que quiere reiniciar el sudoku?', true)" title="Reiniciar"></button>
+        <button popovertarget="popup" (click)="mostrarPopup('Está seguro que quiere la resolución del sudoku?', false)" title="Resolver"></button>
+      </div>
+      <dialog #popup_dialog (close)="pausar()" id="popup-cabecera-sudoku">
+        <h2>Está seguro que quiere reiniciar?</h2>
+        <div>
+          <button (click)="operacionPopup()">Sí</button>
+          <button *ngIf="flagDialogOperacion" (click)="nuevoSudoku()">Nuevo sudoku</button>
+          <button (click)="popupDialog.nativeElement.close()">Cancelar</button>
+        </div>
+      </dialog>
+    </div>
+    <div class="sudoku-tablero" #tablero_sudoku (focusout)="quitarPintado()" (focusin)="pintarCeldas($event)" (keydown)="ingresarNumero($event)">
+      @for (fila of matriz; let i = $index; track $index) {
+        @for (columna of fila; let j = $index; track $index) {
+          <input class="celda-sudoku" [class.resaltado_r]="rowResaltada === i" [class.resaltado_c]="colResaltada === j" [attr.data-row]="i" [attr.data-col]="j" maxlength="1" inputmode="numeric">
+        }
+      }
+    </div>
+    <button class="btn-sudoku-nuevo-juego" (click)="nuevoSudoku()" *ngIf="sudokuResuelto">Vamos por otra!!</button>
+  </div>
+</section>
