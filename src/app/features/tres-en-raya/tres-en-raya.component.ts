@@ -2,7 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 enum Ficha { // X = 1, O = -1
-  X, O
+  X = 1, O = -1
+}
+enum EstadoJuego {
+  GANA_O = -1,  EMPATE = 0, GANA_X = 1, EN_CURSO, EN_ESPERA
 }
 
 @Component({
@@ -23,27 +26,27 @@ export class TresEnRayaComponent {
 
   }
 
-  private valorEstado(matriz: Int8Array, nJugadas: number): number {
+  private valorEstado(nJugadas: number): EstadoJuego {
     let aux = 0;
     // verificación en filas y columnas
     for (let i = 0; i < 3; i++) {
-      aux = matriz[i * 3] + matriz[i * 3 + 1] + matriz[i * 3 + 2];
-      if (aux === 3) return 1;
-      if (aux === -3) return -1;
-      aux = matriz[i] + matriz[i + 3] + matriz[i + 6];
-      if (aux === 3) return 1;
-      if (aux === -3) return -1;
+      aux = this.matriz[i * 3] + this.matriz[i * 3 + 1] + this.matriz[i * 3 + 2];
+      if (aux === 3) return EstadoJuego.GANA_X;
+      if (aux === -3) return EstadoJuego.GANA_O;
+      aux = this.matriz[i] + this.matriz[i + 3] + this.matriz[i + 6];
+      if (aux === 3) return EstadoJuego.GANA_X;
+      if (aux === -3) return EstadoJuego.GANA_O;
     }
-    aux = matriz[0] + matriz[4] + matriz[8];
-    if (aux === 3) return 1;
-    if (aux === -3) return -1;
-    aux = matriz[2] + matriz[4] + matriz[6];
-    if (aux === 3) return 1;
-    if (aux === -3) return -1;
+    aux = this.matriz[0] + this.matriz[4] + this.matriz[8];
+    if (aux === 3) return EstadoJuego.GANA_X;
+    if (aux === -3) return EstadoJuego.GANA_O;
+    aux = this.matriz[2] + this.matriz[4] + this.matriz[6];
+    if (aux === 3) return EstadoJuego.GANA_X;
+    if (aux === -3) return EstadoJuego.GANA_O;
     
-    if (nJugadas === 9) return 0; // empate
+    if (nJugadas === 9) return EstadoJuego.EMPATE;
     
-    return -2; // flag para indicar que no es estado terminal
+    return EstadoJuego.EN_CURSO; // flag para indicar que no es estado terminal
   }
 
   private posiblesJugadas(): number[] {
@@ -56,9 +59,9 @@ export class TresEnRayaComponent {
     return jugadas;
   }
 
-  private minimax(ficha: Ficha, nJugadas: number, alpha = -100, beta = 100): number {
-    const valorEstado = this.valorEstado(this.matriz, nJugadas);
-    if (valorEstado !== -2) { // estado terminal
+  private minimax(ficha: Ficha, nJugadas: number, alpha = -100, beta = 100): EstadoJuego {
+    const valorEstado = this.valorEstado(nJugadas);
+    if (valorEstado !== EstadoJuego.EN_CURSO) { // estado terminal
       return valorEstado;
     }
 
@@ -85,7 +88,7 @@ export class TresEnRayaComponent {
     return valor;
   }
 
-  mejorJugada(ficha: Ficha) {
+  mejorJugada(ficha: Ficha): number {
     let mejorIndice = -1;
     let mejorValor = 0;
     if (ficha === Ficha.X) {
@@ -114,16 +117,32 @@ export class TresEnRayaComponent {
     return mejorIndice;
   }
 
+  efectuarJugada(i: number, ficha: Ficha) {
+    this.matriz[i] = ficha;
+    this.nJugadas++;
+    switch (this.valorEstado(this.nJugadas)) {
+      case EstadoJuego.GANA_X:
+        alert("ganó X")
+        break;
+      case EstadoJuego.GANA_O:
+        alert("ganó O")
+        break;
+      case EstadoJuego.EMPATE:
+        alert("empate ps")
+        break;
+      default:
+        break;
+    }
+  }
+
   public hacerJugada(event: Event) {
     let i: any = (event.target as HTMLDivElement).dataset["i"];
     if (!i) return;
     i = parseInt(i as string);
     if (this.matriz[i]) return;
-    this.matriz[i] = 1;
-    this.nJugadas++;
+    this.efectuarJugada(i, Ficha.X);
 
     i = this.mejorJugada(Ficha.O)
-    this.nJugadas++;
-    this.matriz[i] = -1;
+    this.efectuarJugada(i, Ficha.O);
   }
 }
