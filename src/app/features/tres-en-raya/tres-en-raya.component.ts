@@ -56,7 +56,7 @@ export class TresEnRayaComponent {
     return jugadas;
   }
 
-  private minimax(ficha: Ficha, nJugadas: number): number {
+  private minimax(ficha: Ficha, nJugadas: number, alpha = -100, beta = 100): number {
     const valorEstado = this.valorEstado(this.matriz, nJugadas);
     if (valorEstado !== -2) { // estado terminal
       return valorEstado;
@@ -65,27 +65,32 @@ export class TresEnRayaComponent {
     let valor = 0;
     if (ficha === Ficha.X) {
       valor = -100;
-      this.posiblesJugadas().forEach(i => {
+      for (const i of this.posiblesJugadas()) {
         this.matriz[i] = 1;
-        valor = Math.max(valor, this.minimax(Ficha.O, nJugadas + 1))
+        valor = Math.max(valor, this.minimax(Ficha.O, nJugadas + 1, alpha, beta))
         this.matriz[i] = 0;
-      });
+        alpha = Math.max(alpha, valor);
+        if (alpha >= beta) break;
+      }
     } else { // se asume que es miTurno de O
       valor = 100;
-      this.posiblesJugadas().forEach(i => {
+      for (const i of this.posiblesJugadas()) {
         this.matriz[i] = -1;
-        valor = Math.min(valor, this.minimax(Ficha.X, nJugadas + 1))
+        valor = Math.min(valor, this.minimax(Ficha.X, nJugadas + 1, alpha, beta))
         this.matriz[i] = 0;
-      });
+        beta = Math.min(beta, valor);
+        if (alpha >= beta) break;
+      }
     }
     return valor;
   }
 
   mejorJugada(ficha: Ficha) {
     let mejorIndice = -1;
-    let mejorValor = (ficha === Ficha.X) ? -100 : 100;
-    this.posiblesJugadas().forEach(i => {
-      if (ficha === Ficha.X) {
+    let mejorValor = 0;
+    if (ficha === Ficha.X) {
+      mejorValor = -100;
+      this.posiblesJugadas().forEach(i => {
         this.matriz[i] = 1;
         const valor = Math.max(mejorValor, this.minimax(Ficha.O, this.nJugadas + 1))
         this.matriz[i] = 0;
@@ -93,7 +98,10 @@ export class TresEnRayaComponent {
           mejorValor = valor;
           mejorIndice = i;
         }
-      } else { // se asume que es miTurno de O
+      })
+    } else { // se asume que es miTurno de O
+      mejorValor = 100;
+      this.posiblesJugadas().forEach(i => {
         this.matriz[i] = -1;
         const valor = Math.min(mejorValor, this.minimax(Ficha.X, this.nJugadas + 1))
         this.matriz[i] = 0;
@@ -101,8 +109,8 @@ export class TresEnRayaComponent {
           mejorValor = valor;
           mejorIndice = i;
         }
-      }
-    })
+      })
+    }
     return mejorIndice;
   }
 
@@ -113,7 +121,7 @@ export class TresEnRayaComponent {
     if (this.matriz[i]) return;
     this.matriz[i] = 1;
     this.nJugadas++;
-    
+
     i = this.mejorJugada(Ficha.O)
     this.nJugadas++;
     this.matriz[i] = -1;
