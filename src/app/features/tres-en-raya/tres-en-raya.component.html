@@ -1,6 +1,6 @@
 <section class="tres-en-raya-juego">
   <div class="tres-contenedor">
-    <div class="tres-tablero" (click)="rellenar($event)">
+    <div class="tres-tablero" (click)="hacerJugada($event)">
       @for (item of matriz; let i = $index; track $index) {
         <div class="tres-celda" [attr.data-i]="i">
           <div *ngIf="item === -1" class="tres-o">
