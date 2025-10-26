@@ -19,7 +19,10 @@ export class TresEnRayaComponent {
   public matriz: Int8Array = new Int8Array(9);
   public miTurno: boolean = true;
   public nJugadas: number = 0;
+  private miFicha: Ficha = Ficha.X;
+  private estadoJuego: EstadoJuego = EstadoJuego.EN_ESPERA;
   ngOnInit(): void {
+    this.iniciarJuego();
   }
 
   ngOnDestruct(): void {
@@ -120,29 +123,44 @@ export class TresEnRayaComponent {
   efectuarJugada(i: number, ficha: Ficha) {
     this.matriz[i] = ficha;
     this.nJugadas++;
+    if (this.nJugadas > 4)
     switch (this.valorEstado(this.nJugadas)) {
       case EstadoJuego.GANA_X:
         alert("ganó X")
+        this.estadoJuego = EstadoJuego.GANA_X;
         break;
       case EstadoJuego.GANA_O:
         alert("ganó O")
+        this.estadoJuego = EstadoJuego.GANA_O;
         break;
       case EstadoJuego.EMPATE:
         alert("empate ps")
+        this.estadoJuego = EstadoJuego.EMPATE;
         break;
       default:
         break;
     }
   }
 
+  iniciarJuego() {
+    this.estadoJuego = EstadoJuego.EN_CURSO;
+    if (Math.random() <= 0.5) {
+      this.miFicha = Ficha.X;
+    } else {
+      this.miFicha = Ficha.O;
+      this.efectuarJugada(0, Ficha.X); // la mejor jugada inicial es en 0, o cualquier otra esquina
+    }
+  }
+
   public hacerJugada(event: Event) {
+    if (this.estadoJuego !== EstadoJuego.EN_CURSO) return;
     let i: any = (event.target as HTMLDivElement).dataset["i"];
     if (!i) return;
     i = parseInt(i as string);
     if (this.matriz[i]) return;
-    this.efectuarJugada(i, Ficha.X);
+    this.efectuarJugada(i, this.miFicha);
 
-    i = this.mejorJugada(Ficha.O)
-    this.efectuarJugada(i, Ficha.O);
+    i = this.mejorJugada((this.miFicha == Ficha.X) ? Ficha.O : Ficha.X)
+    this.efectuarJugada(i, (this.miFicha == Ficha.X) ? Ficha.O : Ficha.X);
   }
 }
