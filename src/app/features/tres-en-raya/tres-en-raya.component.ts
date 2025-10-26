@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
+
+
 @Component({
   selector: 'app-tres-en-raya',
   standalone: true,
@@ -10,7 +12,7 @@ import { Component } from '@angular/core';
 })
 export class TresEnRayaComponent {
   public matriz: Int8Array = new Int8Array(9);
-  public nose: boolean = false;
+  public turno: boolean = true;
   ngOnInit(): void {
   }
 
@@ -18,9 +20,13 @@ export class TresEnRayaComponent {
 
   }
 
-  rellenar(i: number) {
-    this.matriz[i] = (this.nose) ? 1 : -1;
-    this.nose = !this.nose;
-    console.log(this.nose);
+
+  rellenar(event: Event) {
+    let i: any = (event.target as HTMLDivElement).dataset["i"];
+    if (!i) return;
+    i = parseInt(i as string);
+    if (this.matriz[i]) return;
+    this.matriz[i] = (this.turno) ? 1 : -1;
+    this.turno = !this.turno;
   }
 }

@@ -8,6 +8,9 @@ section.tres-en-raya-juego {
 .tres-contenedor {
   width: 400px;
   position: relative;
+}
+
+.tres-tablero {
   display: grid;
   grid-auto-flow: row;
   grid-template-columns: repeat(3, 1fr);

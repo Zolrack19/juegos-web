@@ -1,16 +1,18 @@
 <section class="tres-en-raya-juego">
   <div class="tres-contenedor">
-    @for (item of matriz; let i = $index; track $index) {
-      <div (click)="rellenar(i)" class="tres-celda">
-        <div *ngIf="item === -1" class="tres-o">
-        </div>
-        <div *ngIf="item === 1" class="tres-x">
-          <div class="x-1">
+    <div class="tres-tablero" (click)="rellenar($event)">
+      @for (item of matriz; let i = $index; track $index) {
+        <div class="tres-celda" [attr.data-i]="i">
+          <div *ngIf="item === -1" class="tres-o">
           </div>
-          <div class="x-2">
+          <div *ngIf="item === 1" class="tres-x">
+            <div class="x-1">
+            </div>
+            <div class="x-2">
+            </div>
           </div>
         </div>
-      </div>
-    }
+      }
+    </div>
   </div>
 </section>
