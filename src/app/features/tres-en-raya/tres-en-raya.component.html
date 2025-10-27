@@ -14,10 +14,12 @@
         </div>
       }
     </div>
-    <div class="tres-menu">
-      <div id="menu-titulo">X GANA</div>
-      <div>Jugar solo</div>
-      <div>Jugar vs IA</div>
+    <div *ngIf="estadoJuego === 3" class="tres-menu">
+      <div id="menu-titulo"><span>{{text}}</span></div>
+      <div id="menu-opciones" translate="no" spellcheck="false" draggable="false">
+        <div (click)="iniciarJuego()">Jugar solo</div>
+        <div (click)="iniciarJuego(true)">Jugar vs IA</div>
+      </div>
     </div>
   </div>
 </section>

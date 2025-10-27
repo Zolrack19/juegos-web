@@ -5,7 +5,7 @@ enum Ficha {
   X = 1, O = -1
 }
 enum EstadoJuego {
-  GANA_O = -1,  EMPATE = 0, GANA_X = 1, EN_CURSO, EN_ESPERA
+  GANA_O = -1,  EMPATE = 0, GANA_X = 1, EN_CURSO, EN_ESPERA = 3
 }
 
 @Component({
@@ -18,16 +18,12 @@ enum EstadoJuego {
 export class TresEnRayaComponent {
   public matriz: Int8Array = new Int8Array(9);
   public miTurno: boolean = true;
-  public nJugadas: number = 0;
+  public vsIA: boolean = false;
+  public estadoJuego: EstadoJuego = EstadoJuego.EN_ESPERA;
+  public text = "HOLA";
+
   private miFicha: Ficha = Ficha.X;
-  private estadoJuego: EstadoJuego = EstadoJuego.EN_ESPERA;
-  ngOnInit(): void {
-    this.iniciarJuego();
-  }
-
-  ngOnDestruct(): void {
-
-  }
+  private nJugadas: number = 0;
 
   private valorEstado(nJugadas: number): EstadoJuego {
     let aux = 0;
@@ -67,7 +63,6 @@ export class TresEnRayaComponent {
     if (valorEstado !== EstadoJuego.EN_CURSO) { // estado terminal
       return valorEstado;
     }
-
     let valor = 0;
     if (ficha === Ficha.X) {
       valor = -100;
@@ -78,7 +73,7 @@ export class TresEnRayaComponent {
         alpha = Math.max(alpha, valor);
         if (alpha >= beta) break;
       }
-    } else { // se asume que es miTurno de O
+    } else { // se asume que es turno de O
       valor = 100;
       for (const i of this.posiblesJugadas()) {
         this.matriz[i] = -1;
@@ -105,7 +100,7 @@ export class TresEnRayaComponent {
           mejorIndice = i;
         }
       })
-    } else { // se asume que es miTurno de O
+    } else { // se asume que es turno de O
       mejorValor = 100;
       this.posiblesJugadas().forEach(i => {
         this.matriz[i] = -1;
@@ -126,24 +121,31 @@ export class TresEnRayaComponent {
     if (this.nJugadas > 4)
     switch (this.valorEstado(this.nJugadas)) {
       case EstadoJuego.GANA_X:
-        alert("ganó X")
-        this.estadoJuego = EstadoJuego.GANA_X;
+        this.text = "X GANA"
+        this.estadoJuego = EstadoJuego.EN_ESPERA;
         break;
       case EstadoJuego.GANA_O:
-        alert("ganó O")
-        this.estadoJuego = EstadoJuego.GANA_O;
+        this.text = "O GANA"
+        this.estadoJuego = EstadoJuego.EN_ESPERA;
         break;
       case EstadoJuego.EMPATE:
-        alert("empate ps")
-        this.estadoJuego = EstadoJuego.EMPATE;
+        this.text = "EMPATE"
+        this.estadoJuego = EstadoJuego.EN_ESPERA;
         break;
       default:
         break;
     }
   }
 
-  iniciarJuego() {
+  iniciarJuego(vsIA = false) {
+    this.vsIA = vsIA;
+    this.miTurno = true;
     this.estadoJuego = EstadoJuego.EN_CURSO;
+    this.nJugadas = 0;
+    for (let i = 0; i < 9; i++) {
+      this.matriz[i] = 0;
+    }
+    if (!vsIA) return;
     if (Math.random() <= 0.5) {
       this.miFicha = Ficha.X;
     } else {
@@ -158,8 +160,12 @@ export class TresEnRayaComponent {
     if (!i) return;
     i = parseInt(i as string);
     if (this.matriz[i]) return;
+    if (!this.vsIA) {
+      this.efectuarJugada(i, (this.miTurno) ? Ficha.X : Ficha.O);
+      this.miTurno = !this.miTurno;
+      return;
+    }
     this.efectuarJugada(i, this.miFicha);
-
     i = this.mejorJugada((this.miFicha == Ficha.X) ? Ficha.O : Ficha.X)
     this.efectuarJugada(i, (this.miFicha == Ficha.X) ? Ficha.O : Ficha.X);
   }
