@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
-enum Ficha { // X = 1, O = -1
+enum Ficha {
   X = 1, O = -1
 }
 enum EstadoJuego {

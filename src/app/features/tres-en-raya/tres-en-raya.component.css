@@ -3,6 +3,7 @@ section.tres-en-raya-juego {
   justify-content: center;
   align-items: center;
   --color-barras: rgb(47, 252, 92);
+  padding: 20px 0;
 }
 
 .tres-contenedor {
@@ -102,4 +103,43 @@ section.tres-en-raya-juego {
   to {
     transform: rotate(-45deg) translateX(-18%);
   }
+}
+
+.tres-menu {
+  position: absolute;
+  border-radius: 10px;
+  z-index: 15;
+  inset: 0px;
+  border: 5px solid rgba(97, 231, 255, 0.281);
+  box-shadow: inset -25px 0px 50px rgba(0, 23, 88, 0.712);
+  background-image: radial-gradient(rgb(0, 0, 0) 55%, rgb(2, 44, 23));
+  opacity: 95%;
+  padding: 5px 15px;
+}
+
+#menu-titulo {
+  margin: 10% 0 25%;
+  line-height: 2.0ex;
+  text-align: center;
+  font-size: 6.0rem;
+  background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to bottom, black 40%, rgb(0, 255, 0), black 80%);
+  filter: drop-shadow(0px 0px 2px rgb(38, 255, 190));
+}
+
+.tres-menu div:not(#menu-titulo) {
+  text-align: center;
+  margin: 15px auto;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  width: 15ch;
+}
+
+.tres-menu div:not(#menu-titulo):hover {
+  border-color: rgb(4, 240, 240);
+  box-shadow: 0px 4px 5px rgb(8, 146, 105);
+}
+.tres-menu div:not(#menu-titulo):active {
+  background-color: rgba(240, 248, 255, 0.336);
 }
